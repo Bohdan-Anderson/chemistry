@@ -1,0 +1,215 @@
+/* GLOBAL */
+	body,html{
+		padding: 0;
+		margin: 0;
+		height: 100%;
+		width: 100%;
+		font-family: 'Roboto', sans-serif;
+		min-width: 780px;
+
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
+
+	h1{
+		font-weight: normal;
+		padding: 0	1em 0 1em;
+		color: #fff;
+		background-color: #555;
+		margin-bottom: 0;
+		text-transform: uppercase;
+	}
+
+	.hide{
+		display: none !important;
+	}
+
+	.button{
+		display: inline-block;
+		padding: 0.5em;
+		background-color: #999;
+		color: #000;
+		text-transform: uppercase;
+		font-weight: bold;
+		-webkit-transition: all 0.25s;
+	}
+	.button:hover{
+		background-color: #444;
+		color: #fff;
+	}
+
+/* Ratios */
+	.balanced-equation{
+		background-color: #4f4;
+	}
+	.failed-equation{
+		background-color: #f44;
+	}
+
+/* Side Level */
+	.side{
+		display: inline-block;
+		width: 45%;
+		vertical-align: top;
+	}
+
+	.side > .button{
+		width: 100%;
+		padding: 1em 0 1em 0;
+		text-align: center;
+	}
+
+	.devide{
+		font-size: 5em;
+		font-weight: bolder;
+		width: 10%;
+		display: inline-block;
+		text-align: center;
+	}
+	.footer{
+		position: fixed;
+		bottom: 0;
+		left: 0;
+	}
+
+/* molecular level */
+	.mole{
+		display: inline-block;
+		vertical-align: top;
+		width: 50%;
+		margin-top: 1em;
+		display: inline-block;
+	}
+
+	.mole > .button{
+		width: 50%;
+		padding: 0.25em 0 0.25em 0;
+		text-align: center;
+		display: inline-block;
+		color: #fff;
+		background-color: #fff;
+	}
+
+	.mole:hover > .button{
+		color: inherit;
+		background-color: #777;
+	}
+
+	.mole:hover > .button:hover{
+		color: #fff;
+		background-color: #444;
+	}
+
+	.mole > div > span{
+		font-size: 3em;
+		vertical-align: top;
+	}
+
+	.mole:hover .mol-detailbutton{
+		color: inherit;
+		background-color: #777;
+	}
+	.mole:hover .mol-detailbutton:hover{
+		color: #fff;
+		background-color: #444;
+	}
+	.mol-detailbutton{
+		color: #fff;
+		background-color: #fff;
+		float: right;
+	}
+
+/* Element Level */
+	.el-container{
+		/*min-width: 25%;*/
+		display: inline-block;
+	}
+
+	.el-info{
+		width: 100%;
+		display: inline-block;
+		text-align: center;
+	}
+
+	.el-name{
+		display: inline-block;
+		font-size: 3em;
+	}
+
+	.el-quan{
+		display: inline-block;
+	}
+
+	.el-container > .button{
+		width: 50%;
+		padding: 0;
+		text-align: center;
+		background-color: #fff;
+		color: #fff;
+	}
+
+	.el-container:hover > .button{
+		background-color: #444;
+		color: #fff;
+	}
+
+	.change-structure{
+		font-size: 0.4em;
+	}
+
+/* Molecular OverLay */
+	.overlay{
+		position: fixed;
+		z-index: 999;
+		left: 0;
+		top: 0;
+		background-color: rgba(255,255,255,0.7);
+		width: 100%;
+		height: 100%;
+		vertical-align: top;
+	}
+	.over-close{
+		position: fixed;
+		top: 1em;
+		right: 1em;
+		width: 1em;
+		height: 1em;
+		text-align: center;
+	}
+
+	/* structure */
+		.change-structure{
+			display: block;
+			font-size: 1em;
+		}
+		.structure-container{
+			display: inline-block;
+			width: auto;
+			margin-top: 2em;
+			margin-left: 1em;
+			padding: 0.5em;
+			background-color: #fff;
+		}
+		.structure-title{
+			font-size: 1.3em;
+			font-weight: bold;
+			text-transform: uppercase;
+			padding-bottom: 0.5em;
+		}
+
+
+
+	.place-holder{
+		display: inline-block;
+		position: absolute;
+		top: 12.5%;
+		left: 25%;
+		width: 50%;
+		height: 75%;
+		background-color: #aaa;
+		font-size: 5em;
+	}
