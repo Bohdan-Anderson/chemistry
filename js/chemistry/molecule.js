@@ -1,13 +1,15 @@
-function Molecule(parent){
+	function Molecule(parent){
 	var el = [];
 	var quantity = 1;
 	var totalMass;
 	var totalAMass;
 	var mols;
-
+	var id = Math.floor(Math.random()*100000000);
+	var beingdroppedon = false;
+	this.type = "molecule";
 	// creating the elements
 		var elMol = createEl("span","mole");
-
+		elMol.id = id;
 		//mol Menu
 		var elMolMenue = createEl("span", "mol-menue");
 		var elSelectEl = createEl("select");
@@ -19,6 +21,7 @@ function Molecule(parent){
 			elSelectEl.appendChild(el);
 		});
 		var eladdEl = createEl("span","button change-quantity","add",addEl);
+		var elDrag = createEl("span","mol-detailbutton button change-quantity","drag");
 		var elEldetails = createEl("span","mol-detailbutton button change-quantity ","&#9776;",detailView);
 
 		//element container
@@ -45,6 +48,7 @@ function Molecule(parent){
 		elMolMenue.appendChild(elSelectEl);
 		elMolMenue.appendChild(eladdEl);
 		elMolMenue.appendChild(elEldetails);
+		elMolMenue.appendChild(elDrag);
 
 		elMol.appendChild(elContainer);
 		elContainer.appendChild(elQuantity);
@@ -98,19 +102,39 @@ function Molecule(parent){
 	//returns array of el with total quantities
 	this.provideElements = function(){
 		var out = {};
-		$(el).each(function(index){
-			var elin = el[index].value();
-			if(elin["quantity"] > 0){
+		removeAllNonEl();
+		for(var a = 0; a < el.length; ++a){
+			if(el[a].type=="molecule"){
+				out["molecule"] = (el[a].provideElements());
+			} else if(el[a].type=="element"){
+				var elin = el[a].value();
 				if(out[elin["element"]]){
 					out[elin["element"]] += elin["quantity"]*quantity;
 				} else {
 					out[elin["element"]] = elin["quantity"]*quantity;
 				}
-			} else {
-				el.splice(index,1);
 			}
-		});
+		};
 		return out;
+	}
+
+	function removeAllNonEl(){
+		for(var a = 0; a < el.length; ++a){
+			if(el[a].type=="molecule"){
+				if(el[a].quantity()<=0){
+					el.splice(a,1);
+				}
+			} else if(el[a].type=="element"){
+				var elin = el[a].value();
+				if(elin["quantity"] <= 0){
+					el.splice(a,1);
+				}
+			}
+		}
+	}
+
+	function getElementValue(index){
+
 	}
 
 	//when input of mass is changed triggers calculation
@@ -137,11 +161,15 @@ function Molecule(parent){
 
 	//zeros the molecule so that we can find the lowest denominator properly for second time running equation
 	this.resetBasedOffInputMass = function(){
+		cleanMol();
+		massInputChange();
+	}
+
+	function cleanMol(){
 		totalAMass = NaN;
 		totalMass = NaN;
 		mols = NaN;
 		elMassOutcome.innerHTML="";
-		massInputChange();
 	}
 
 	//determine the mass of Molecules
@@ -186,6 +214,91 @@ function Molecule(parent){
 		}
 		addMol(molsQuant);
 	}
+
+
+	/////// drag and drop functionality ///////
+		$(elDrag).on("mousedown", dragMol);
+
+		function dragMol(){
+			$(this.parentNode.parentNode).addClass("dragging");
+			$(window).on("mousemove", setLocationofDrag);
+			$(window).on("mouseup", unlock);
+		}
+
+		function unlock(){
+			$(".dragging").removeClass("dragging");
+			$(window).off("mousemove",setLocationofDrag);
+			$(window).off("mouseup",unlock);
+		}
+
+		function setLocationofDrag(event){
+			var elementToMove = $(".dragging")[0];
+			var moveToX = event["clientX"];
+			var moveToY = event["clientY"];
+			elementToMove.style.left = moveToX;
+			elementToMove.style.top = moveToY;
+		}
+
+		function getElementLocation(element){
+			var jElOffSet = $(element).offset();
+			var minx = jElOffSet.left;
+			var miny = jElOffSet.top;
+			var maxx = minx+$(element).width();
+			var maxy = miny+$(element).height();
+			return [minx,maxx,miny,maxy];
+		}
+
+		$(elMol).on("mouseup",triggerDropEl);
+		function triggerDropEl(){
+			var dragger = $(".dragging")[0];
+			if(dragger){
+				beingdroppedon = true;
+			}
+		}
+
+		this.dropped = function(variable){
+			if(variable === false || variable ===true){
+				beingdroppedon = variable;
+			}
+			return beingdroppedon;
+		}
+
+		this.id = function(){
+			return id+"";
+		}
+		this.rootEl = function(){
+			return elMol;
+		}
+
+
+	////// add sub molecule ///////
+		this.addSubMol = function(newMol){
+			el.push(newMol);
+		}
+
+		var elDisplayContainer = createEl("span","sub-molecule");
+		var elSMOpen = createEl("span","sm-bracket","(");
+		var elSMClose = createEl("span","sm-bracket",")");
+
+		this.renderSubMol = function(parentNode){
+			elContainer.appendChild(elDisplayContainer);
+			elDisplayContainer.appendChild(elSMOpen);
+			for(var a = 0; a < el.length; ++a){
+				if(el[a].type=="molecule"){
+					el[a].changeElRenderLoc(elDisplayContainer);
+				}
+			}
+			elDisplayContainer.appendChild(elSMClose);
+		}
+
+		this.changeElRenderLoc = function(newLocation){
+			for(var a = 0; a < el.length; ++a){
+				if(el[a].type == "element"){
+					el[a].newElRenderLoc(newLocation);
+				}
+			}
+			elMol.parentNode.removeChild(elMol);
+		}
 
 
 	////// the detail view ///////////

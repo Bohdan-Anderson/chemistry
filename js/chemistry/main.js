@@ -47,6 +47,11 @@ function Main(){
 		{"molsQuan":1,"elements":[{"elName":"O","quan":2}]}
 		]);
 
+	right.addMolsAddEl([
+		{"molsQuan":1,"elements":[{"elName":"H","quan":2},{"elName":"O","quan":1}]},
+		{"molsQuan":1,"elements":[{"elName":"O","quan":2}]}
+		]);
+
 	document.body.appendChild(elFooter);
 	elFooter.appendChild(elBalance);
 	elFooter.appendChild(elMakeMass);
@@ -89,8 +94,12 @@ function Main(){
 	}
 
 	function clickbalance(){
+		console.log("left");
 		var leftEl = left.listofelements();
+		console.log(leftEl);
+		console.log("right");
 		var rightEl = right.listofelements();
+		console.log(rightEl);
 		var passed = true;
 		for(el in leftEl){
 			if(rightEl[el] && rightEl[el] == leftEl[el]){

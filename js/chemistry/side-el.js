@@ -26,10 +26,21 @@ function Sideofel(title){
 		$(mols).each(function(index){
 			var newEls = mols[index].provideElements();
 			for(el in newEls){
-				if(out[el]){
-					out[el] += newEls[el];
+				if(el == "molecule"){
+					for(subel in newEls[el]){
+						console.log(subel);
+						if(out[subel]){
+							out[subel] += newEls[el][subel];
+						} else {
+							out[subel] = newEls[el][subel];
+						}
+					}
 				} else {
-					out[el] = newEls[el];
+					if(out[el]){
+						out[el] += newEls[el];
+					} else {
+						out[el] = newEls[el];
+					}
 				}
 			}
 		});
@@ -93,4 +104,48 @@ function Sideofel(title){
 		}
 	}
 
+	//function for adding molecules to molecules
+		var tobedropped = null;
+		$(elSide).on("mouseup",triggerAddSubMol);
+		function triggerAddSubMol(){
+			var dragger = $(".dragging")[0];
+			if(dragger){
+				tobedropped = dragger.id;
+				findMolthatDropped(tobedropped);
+			}
+		}
+
+		function findMolthatDropped(dropping){
+			var addingTo = null;
+			var adding = null;
+			var toremove = null;
+			for(var a =0; a < mols.length; ++a){
+				if(mols[a].dropped()){
+					addingTo = mols[a];
+					mols[a].dropped(false);
+				} else if(mols[a].id()==dropping){
+					adding = mols[a];
+					toremove = a;
+				}
+			}
+			if(toremove || toremove === 0){
+				mols.splice(toremove,1);
+			}
+
+			if(addingTo && adding){
+				addingTo.addSubMol(adding);
+				addingTo.renderSubMol();
+			} else {
+				console.log("something went wrong... element was not dropped on an other element, on the same element as self, something happed out of order...");
+				// alert("both elements where not found, most likely because they where the same element!!!");
+			}
+		}
 }
+
+
+
+
+
+
+
+

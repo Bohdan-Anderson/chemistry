@@ -1,4 +1,5 @@
 function Element(elname, parent, quantityIn){
+	this.type = "element";
 	//creating element
 		var element = ptable({symbol:elname}).first();
 		var quantity = 1;
@@ -77,6 +78,10 @@ function Element(elname, parent, quantityIn){
 	this.structure =function(){
 		elStrucNeed.innerHTML = element.eNeed;
 		return [element.tVa*quantity,element.eNeed*quantity]
+	}
+
+	this.newElRenderLoc = function(newParent){
+		newParent.appendChild(elContainer);
 	}
 }
 

@@ -122,6 +122,17 @@
 		background-color: #fff;
 		float: right;
 	}
+	.dragging{
+		position: fixed;
+	}
+
+	.dragging span{
+		display: none;
+	}
+	.dragging .el-info, .dragging .el-info > span{
+		display: inline-block !important;
+	}
+
 
 /* Element Level */
 	.el-container{
@@ -160,6 +171,19 @@
 	.change-structure{
 		font-size: 0.4em;
 	}
+
+	/* Sub molar */
+		.sub-molecule{
+			font-size: 1em !important;
+		}
+		.sub-molecule .el-info{
+			font-size: 1em;
+		}
+		.sub-molecule .sm-bracket{
+			font-size: 3em;
+			vertical-align: top;
+		}
+
 
 /* Molecular OverLay */
 	.overlay{
@@ -213,3 +237,7 @@
 		background-color: #aaa;
 		font-size: 5em;
 	}
+
+
+
+
