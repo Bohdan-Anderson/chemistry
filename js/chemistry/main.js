@@ -31,26 +31,26 @@ function Main(){
 	// 	{"molsQuan":4,"elements":[{"elName":"H","quan":2}]}
 	// 	]);
 
-	// left.addMolsAddEl([
-	// 	{"molsQuan":8,"elements":[{"elName":"C","quan":1},{"elName":"H","quan":3},{"elName":"N","quan":1},{"elName":"H","quan":2}]},
-	// 	{"molsQuan":20,"elements":[{"elName":"O","quan":2}]}
-	// 	]);
-	// right.addMolsAddEl([
-	// 	{"molsQuan":8,"elements":[{"elName":"C","quan":1},{"elName":"O","quan":2}]},
-	// 	{"molsQuan":4,"elements":[{"elName":"N","quan":2},{"elName":"O","quan":1}]},
-	// 	{"molsQuan":20,"elements":[{"elName":"H","quan":2},{"elName":"O","quan":1}]}
-	// 	]);
+	left.addMolsAddEl([
+		{"molsQuan":8,"elements":[{"elName":"C","quan":1},{"elName":"H","quan":3},{"elName":"N","quan":1},{"elName":"H","quan":2}]},
+		{"molsQuan":20,"elements":[{"elName":"O","quan":2}]}
+		]);
+	right.addMolsAddEl([
+		{"molsQuan":8,"elements":[{"elName":"C","quan":1},{"elName":"O","quan":2}]},
+		{"molsQuan":4,"elements":[{"elName":"N","quan":2},{"elName":"O","quan":1}]},
+		{"molsQuan":20,"elements":[{"elName":"H","quan":2},{"elName":"O","quan":1}]}
+		]);
 	// showStruct();
 
-	left.addMolsAddEl([
-		{"molsQuan":1,"elements":[{"elName":"H","quan":2},{"elName":"O","quan":1}]},
-		{"molsQuan":1,"elements":[{"elName":"O","quan":2}]}
-		]);
+	// left.addMolsAddEl([
+	// 	{"molsQuan":1,"elements":[{"elName":"H","quan":2},{"elName":"O","quan":1}]},
+	// 	{"molsQuan":1,"elements":[{"elName":"O","quan":2}]}
+	// 	]);
 
-	right.addMolsAddEl([
-		{"molsQuan":1,"elements":[{"elName":"H","quan":2},{"elName":"O","quan":1}]},
-		{"molsQuan":1,"elements":[{"elName":"O","quan":2}]}
-		]);
+	// right.addMolsAddEl([
+	// 	{"molsQuan":1,"elements":[{"elName":"H","quan":2},{"elName":"O","quan":1}]},
+	// 	{"molsQuan":1,"elements":[{"elName":"O","quan":2}]}
+	// 	]);
 
 	document.body.appendChild(elFooter);
 	elFooter.appendChild(elBalance);

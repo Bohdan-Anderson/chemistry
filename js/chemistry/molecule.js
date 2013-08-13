@@ -7,6 +7,7 @@
 	var id = Math.floor(Math.random()*100000000);
 	var beingdroppedon = false;
 	this.type = "molecule";
+
 	// creating the elements
 		var elMol = createEl("span","mole");
 		elMol.id = id;
@@ -25,10 +26,11 @@
 		var elEldetails = createEl("span","mol-detailbutton button change-quantity ","&#9776;",detailView);
 
 		//element container
-		var elContainer = createEl("div");
-		var elQuantity = createEl("span");
+		var elContainer = createEl("div","els-container");
+		var elQuantity = createEl("span","mol-quan");
 
 		//add and sub buttons
+		var elMultMol = createEl("div","change-quantity mol-mult-container");
 		var elAdd = createEl("span","button change-quantity","+",addMol);
 		var elSub = createEl("span","button change-quantity","-",subMol);
 
@@ -53,8 +55,9 @@
 		elMol.appendChild(elContainer);
 		elContainer.appendChild(elQuantity);
 
-		elMol.appendChild(elAdd);
-		elMol.appendChild(elSub);
+		elMol.appendChild(elMultMol);
+		elMultMol.appendChild(elAdd);
+		elMultMol.appendChild(elSub);
 
 		elMol.appendChild(elMassContainer);
 		elMassContainer.appendChild(elInputMols)
@@ -65,34 +68,34 @@
 
 
 
+	//Change quantities
+		function addMol(multipleMols){
+			if(multipleMols>0){			//might fail because not testing type!
+				quantity = multipleMols;
+			} else {
+				++quantity;
+			}
+			if(quantity != 1){
+				elQuantity.innerHTML = quantity;
+			}
+		}
 
-	// if not argumenents then it adds 1 to quantity, if argument, quantity is then argument
-	function addMol(multipleMols){
-		if(multipleMols>0){			//might fail because not testing type!
-			quantity = multipleMols;
-		} else {
-			++quantity;
-		}
-		if(quantity != 1){
-			elQuantity.innerHTML = quantity;
-		}
-	}
+		//subtraction and removal of elements, asks for confirmation of deletion
+		function subMol(){
+			--quantity;
+			if(quantity > 1){
+				elQuantity.innerHTML = quantity;
+			} else {
+				elQuantity.innerHTML = "";
+			}
+			if(quantity < 1 && confirm("do you want to delete the molecule")){
+				elMol.parentNode.removeChild(elMol);
+				el = 0;
+			} else if(quantity<1){
+				quantity = 1;
+			}
+		}	// if not arguments then it adds 1 to quantity, if argument, quantity is then argument
 
-	//subtraction and removal of elements, asks for confirmation of deletion
-	function subMol(){
-		--quantity;
-		if(quantity > 1){
-			elQuantity.innerHTML = quantity;
-		} else {
-			elQuantity.innerHTML = "";
-		}
-		if(quantity < 1 && confirm("do you want to delete the molecule")){
-			elMol.parentNode.removeChild(elMol);
-			el = 0;
-		} else if(quantity<1){
-			quantity = 1;
-		}
-	}
 
 	//add new element based off of what is selected in elSelectEl
 	function addEl(){
@@ -133,10 +136,6 @@
 		}
 	}
 
-	function getElementValue(index){
-
-	}
-
 	//when input of mass is changed triggers calculation
 	function massInputChange(){
 		totalMass = elInputMass.value*1;
@@ -148,71 +147,83 @@
 		}
 	}
 
-	//when input of Mols is changed triggers calculation
-	function molsInputChange(){
-		mols = elInputMols.value*1;
-		if(mols){
-			findAMass();
-			totalMass = mols*totalAMass;
-			elInputMass.value = totalAMass;
-			elMassOutcome.innerHTML = "<br>" + roundToSix(mols) + "mol<br>" + roundToSix(totalMass) + "g";
-		}
-	}
-
-	//zeros the molecule so that we can find the lowest denominator properly for second time running equation
-	this.resetBasedOffInputMass = function(){
-		cleanMol();
-		massInputChange();
-	}
-
-	function cleanMol(){
-		totalAMass = NaN;
-		totalMass = NaN;
-		mols = NaN;
-		elMassOutcome.innerHTML="";
-	}
-
-	//determine the mass of Molecules
-	function findAMass(){
-		totalAMass = 0;
-		for(var a = 0; a < el.length; ++a){
-			totalAMass += el[a].aMass()*el[a].quantity();
-		}
-	}
-
-	//determine the mass of Molecules
-	function findMassFromMols(){
-		if(mols){
-			totalMass = mols*totalAMass;
-		} else {
-			console.log("couldn't calc findMassFromMols because no MOLS given")
-		}
-	}
-
-	//for assigning mols, used in assigning the limiting # of elements
-	//if no Arg returns and calcs mols of el
-	this.mols = function(newMols){
-		if(newMols){
-			elInputMass.value = NaN;
-			elInputMols.value = NaN;
-			mols = newMols;
-			findAMass();
-			findMassFromMols();
-			elMassOutcome.innerHTML = "<br>" + roundToSix(mols) + " mols<br>" + roundToSix(totalMass) + " g";
-		} else {
-			mols = totalMass/totalAMass;
-			return mols
-		}
-	}
-
-	this.quantity = function(){return quantity;}
-
 	//input would be addMolAndEl(3,[{"elName":"H","quan":2},{"elName":"O","quan":1}])
 	this.addMolAndEl = function(molsQuant, elementsToAdd){
 		for(var i = 0; i < elementsToAdd.length; ++i){
 			el.push(new Element(elementsToAdd[i]["elName"],elContainer,elementsToAdd[i]["quan"]))
 		}
 		addMol(molsQuant);
+	}
+
+	//Mass View
+		//when input of Mols is changed triggers calculation
+		function molsInputChange(){
+			mols = elInputMols.value*1;
+			if(mols){
+				findAMass();
+				totalMass = mols*totalAMass;
+				elInputMass.value = totalAMass;
+				elMassOutcome.innerHTML = "<br>" + roundToSix(mols) + "mol<br>" + roundToSix(totalMass) + "g";
+			}
+		}
+
+		//zeros the molecule so that we can find the lowest denominator properly for second time running equation
+		this.resetBasedOffInputMass = function(){
+			cleanMol();
+			massInputChange();
+		}
+
+		this.giveAmass = function(){
+			findAMass();
+			return totalAMass;
+		}
+
+		//determine the mass of Molecules
+		function findAMass(){
+			totalAMass = 0;
+			for(var a = 0; a < el.length; ++a){
+				if(el[a].type=="molecule"){
+					totalAMass += el[a].giveAmass();
+				} else if(el[a].type=="element"){
+					totalAMass += el[a].aMass()*el[a].quantity();
+				}
+			}
+		}
+
+		//determine the mass of Molecules
+		function findMassFromMols(){
+			if(mols){
+				totalMass = mols*totalAMass;
+			} else {
+				console.log("couldn't calc findMassFromMols because no MOLS given")
+			}
+		}
+
+		//for assigning mols, used in assigning the limiting # of elements
+		//if no Arg returns and calcs mols of el
+		this.mols = function(newMols){
+			if(newMols){
+				elInputMass.value = NaN;
+				elInputMols.value = NaN;
+				mols = newMols;
+				findAMass();
+				findMassFromMols();
+				elMassOutcome.innerHTML = "<br>" + roundToSix(mols) + " mols<br>" + roundToSix(totalMass) + " g";
+			} else {
+				mols = totalMass/totalAMass;
+				return mols
+			}
+		}
+
+		this.quantity = function(){return quantity;}
+
+
+
+	function cleanMol(){
+		totalAMass = NaN;
+		totalMass = NaN;
+		mols = NaN;
+		elMassOutcome.innerHTML="";
 	}
 
 
@@ -276,27 +287,34 @@
 			el.push(newMol);
 		}
 
-		var elDisplayContainer = createEl("span","sub-molecule");
+		var elDisplayContainer = createEl("div","sub-molecule");
+		var elSubContainer = createEl("span");
 		var elSMOpen = createEl("span","sm-bracket","(");
 		var elSMClose = createEl("span","sm-bracket",")");
 
 		this.renderSubMol = function(parentNode){
 			elContainer.appendChild(elDisplayContainer);
-			elDisplayContainer.appendChild(elSMOpen);
+			elDisplayContainer.appendChild(elSubContainer);
+			elSubContainer.appendChild(elSMOpen);
+			console.log(elDisplayContainer);
 			for(var a = 0; a < el.length; ++a){
 				if(el[a].type=="molecule"){
-					el[a].changeElRenderLoc(elDisplayContainer);
+					el[a].changeElRenderLoc(elSubContainer,elSMClose);
 				}
 			}
-			elDisplayContainer.appendChild(elSMClose);
+			//elSubContainer.appendChild(elSMClose);
 		}
 
-		this.changeElRenderLoc = function(newLocation){
+		this.changeElRenderLoc = function(newLocation,closingBracket){
 			for(var a = 0; a < el.length; ++a){
 				if(el[a].type == "element"){
 					el[a].newElRenderLoc(newLocation);
 				}
 			}
+			newLocation.appendChild(closingBracket);
+			$(elQuantity).removeClass("mol-quan").addClass("sub-mol-quan");
+			newLocation.appendChild(elQuantity);
+			newLocation.appendChild(elMultMol);
 			elMol.parentNode.removeChild(elMol);
 		}
 
@@ -334,13 +352,36 @@
 		var totalAvailableElectrons = 0;
 		var totalNeededElectrons = 0;
 		for(var a = 0; a < el.length; ++a){
-			var thisEl = el[a].structure();
-			totalAvailableElectrons += thisEl[0];
-			totalNeededElectrons += thisEl[1];
+			if(el[a].type=="molecule"){
+				var thisEl = el[a].structure();
+				totalAvailableElectrons += thisEl[0];
+				totalNeededElectrons += thisEl[1];
+			} else if(el[a].type=="element"){
+				var thisEl = el[a].structure();
+				totalAvailableElectrons += thisEl[0];
+				totalNeededElectrons += thisEl[1];
+			}
 		}
 		elStructureAvailable.innerHTML = totalAvailableElectrons + " Available Electrons " + "<br>";
 		elStructureNeeded.innerHTML = totalNeededElectrons + " Needed Electrons " + "<br>";
 		elStructureBonds.innerHTML = ((totalNeededElectrons-totalAvailableElectrons)*0.5) + " Total Bonds " + "<br>";
+	}
+
+	this.structure = function(){
+		var av = 0;
+		var ne = 0;
+		for(var a = 0; a < el.length; ++a){
+			if(el[a].type=="molecule"){
+				var thisEl = el[a].structure();
+				av += thisEl[0];
+				ne += thisEl[1];
+			} else if(el[a].type=="element"){
+				var thisEl = el[a].structure();
+				av += thisEl[0];
+				ne += thisEl[1];
+			}
+		}
+		return [av,ne]
 	}
 
 	function closeover(){

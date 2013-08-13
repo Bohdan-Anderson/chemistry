@@ -85,7 +85,12 @@
 		display: inline-block;
 	}
 
-	.mole > .button{
+	.mol-menue{
+		width: 100%;
+		vertical-align: top;
+		display: inline-block;
+	}
+	.mol-mult-container > .button{
 		width: 50%;
 		padding: 0.25em 0 0.25em 0;
 		text-align: center;
@@ -94,19 +99,24 @@
 		background-color: #fff;
 	}
 
-	.mole:hover > .button{
+	.mole:hover .mol-mult-container > .button{
 		color: inherit;
 		background-color: #777;
 	}
 
-	.mole:hover > .button:hover{
+	.mole:hover .mol-mult-container > .button:hover{
 		color: #fff;
 		background-color: #444;
 	}
-
-	.mole > div > span{
-		font-size: 3em;
-		vertical-align: top;
+	.mol-mult-container{
+		width: 100%;
+		height: 10px;
+		display: inline-block;
+		margin-bottom: 1em;
+	}
+	.el-container span{
+		/*font-size: 3em;*/
+		vertical-align: bottom;
 	}
 
 	.mole:hover .mol-detailbutton{
@@ -133,10 +143,17 @@
 		display: inline-block !important;
 	}
 
+/*	.mol-mult-container .button{
+		padding: 0.5em 0 0.5em 0;
+		width: 50%;
+		text-align: center;
+	}
+*/
 
 /* Element Level */
 	.el-container{
 		/*min-width: 25%;*/
+		vertical-align: top;
 		display: inline-block;
 	}
 
@@ -172,8 +189,13 @@
 		font-size: 0.4em;
 	}
 
+	.mol-quan{
+		vertical-align: top;
+		font-size: 3em;
+	}
 	/* Sub molar */
 		.sub-molecule{
+			display: inline-block;
 			font-size: 1em !important;
 		}
 		.sub-molecule .el-info{
@@ -182,6 +204,9 @@
 		.sub-molecule .sm-bracket{
 			font-size: 3em;
 			vertical-align: top;
+		}
+		.sub-mol-quan{
+			vertical-align: bottom;
 		}
 
 
