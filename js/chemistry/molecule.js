@@ -324,6 +324,8 @@
 		var container = createEl("div", "overlay");
 		var close = createEl("div","over-close button","x",closeover)
 
+		container.appendChild(close);
+
 		//structure
 		var elStructureContainer = createEl("div","change-structure structure-container");
 		var elStructureTitle = createEl("span","change-structure structure-title","Structure")
@@ -337,15 +339,17 @@
 		elStructureContainer.appendChild(elStructureNeeded);
 		elStructureContainer.appendChild(elStructureBonds);
 
-		var placeholder = createEl("div","place-holder","There will be means to render Molecules here!");
+		// var placeholder = createEl("div","place-holder");
 
-		container.appendChild(placeholder);
+		var board = new DrawingBoard(container, el);
+
+		// container.appendChild(placeholder);
 
 
 	function detailView(){
 		document.body.appendChild(container);
-		container.appendChild(close);
 		calcStructure();
+		board.regenList(el);
 	}
 
 	function calcStructure(){

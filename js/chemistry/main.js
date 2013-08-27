@@ -174,3 +174,28 @@ function Main(){
 		right.setPassed();
 	}
 }
+
+var shiftKey = false;
+var altKey = false;
+setupKeys();
+function setupKeys(parent){
+	$(':not(input)').on("keydown",function(event){
+		var key = event.which;
+		if(key == 18){
+			console.log("alt down");
+			altKey = true;
+		} else if(key == 16){
+			console.log("shift down");
+			shiftKey = true;
+		}
+	});
+	$(':not(input)').on("keyup",function(event){
+		var key = event.which;
+		if(key == 18){
+			altKey = false;
+		} else if(key == 16){
+			shiftKey = false;
+		}
+	});
+}
+
